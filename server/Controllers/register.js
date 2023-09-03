@@ -5,10 +5,8 @@ const axios = require("axios");
 const MongoClient = require('mongodb').MongoClient;
 const client = new MongoClient("mongodb://127.0.0.1:27017/chatapp", { useNewUrlParser: true });
 const register = (req,res)=>{
-    const saltRounds = 10;
-    const myPlaintextPassword = req.body.password;
-    bcrypt.hash(myPlaintextPassword, saltRounds).then(function(hash) {
-        const passwordHash = myPlaintextPassword;
+    
+        const passwordHash = bcrypt.hashSync(req.body.password, 10);
         const users = new Userdb({
             prenom: req.body.prenom,
             nom: req.body.nom,
@@ -22,7 +20,6 @@ const register = (req,res)=>{
         .catch(err =>{
             console.log(err);
         })
-    }); 
 }
 
 const displayUser = (req,res)=>{
@@ -39,6 +36,8 @@ const displayUser = (req,res)=>{
             console.log(`Erreur lors de l'affichage !`)
         }
     })
+
+    
 }
 
 module.exports = {register,displayUser};
