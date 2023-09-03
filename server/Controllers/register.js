@@ -1,4 +1,3 @@
-const { model } = require("mongoose");
 const Userdb = require("../Models/users");
 const bcrypt = require('bcrypt');
 
@@ -23,4 +22,14 @@ const register = (req,res)=>{
     }); 
 }
 
-module.exports = register;
+const displayUser = ()=>{
+    axios.get("mongodb://127.0.0.1:27017/chatapp")
+    .then(data => {
+        console.log(data);
+    })
+    .catch(err => {
+        console.log(err); 
+    })
+}
+
+module.exports = {register,displayUser};

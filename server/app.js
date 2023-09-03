@@ -5,7 +5,7 @@ const cors = require("cors");
 const helmet = require('helmet');
 const app = express();
 const db = require("./Database/db.js");
-
+const route  = require("./Routes/route.js")
 db();
 
 app.use(cors({
@@ -35,8 +35,7 @@ app.use(function(req, res, next) {
 app.use(bodyParser.json())
 app.use(express.json());
 
-
-
+app.use("/",route);
 
 app.listen(PORT,()=>{
     console.log(`Bonjour votre server s'est connecté au port ${PORT}`);
