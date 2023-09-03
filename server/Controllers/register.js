@@ -1,5 +1,6 @@
 const Userdb = require("../Models/users");
 const bcrypt = require('bcrypt');
+const axios = require("axios");
 
 const register = (req,res)=>{
     const saltRounds = 10;
@@ -22,14 +23,25 @@ const register = (req,res)=>{
     }); 
 }
 
-const displayUser = ()=>{
-    axios.get("mongodb://127.0.0.1:27017/chatapp")
+const displayUser = (req,res)=>{
+    // axios.get("mongodb://127.0.0.1:27017/chatapp.users")
+    // .then(data => {
+    //     console.log(data);
+    // })
+    // .catch(err => {
+    //     console.log(err); 
+    // })
+
+    Userdb.find().toArray()
     .then(data => {
-        console.log(data);
+        res.send(data.json());
     })
     .catch(err => {
-        console.log(err); 
+        console.error(`Erreur lors de l'affichage : ${err}`); 
     })
+
+    // res.send("Affichage de nos données !")
+
 }
 
 module.exports = {register,displayUser};
