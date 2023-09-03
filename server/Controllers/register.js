@@ -1,7 +1,9 @@
 const Userdb = require("../Models/users");
 const bcrypt = require('bcrypt');
+const db = require("../Database/db");
 const axios = require("axios");
-
+const MongoClient = require('mongodb').MongoClient;
+const client = new MongoClient("mongodb://127.0.0.1:27017/chatapp", { useNewUrlParser: true });
 const register = (req,res)=>{
     const saltRounds = 10;
     const myPlaintextPassword = req.body.password;
@@ -24,24 +26,19 @@ const register = (req,res)=>{
 }
 
 const displayUser = (req,res)=>{
-    // axios.get("mongodb://127.0.0.1:27017/chatapp.users")
-    // .then(data => {
-    //     console.log(data);
-    // })
-    // .catch(err => {
-    //     console.log(err); 
-    // })
+    const dbname= "chatapp";
+    const dbn = client.db(dbname);
 
-    Userdb.find().toArray()
-    .then(data => {
-        res.send(data.json());
+    dbn.collection("users").find().toArray((err,resultat)=>{
+        if(!err)
+        {
+            res.send(resultat.json());
+        }
+        else
+        {
+            console.log(`Erreur lors de l'affichage !`)
+        }
     })
-    .catch(err => {
-        console.error(`Erreur lors de l'affichage : ${err}`); 
-    })
-
-    // res.send("Affichage de nos données !")
-
 }
 
 module.exports = {register,displayUser};
